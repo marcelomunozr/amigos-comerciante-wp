@@ -1,0 +1,138 @@
+<?php
+/**
+ * Template Name: Template Productos
+ */
+?>
+<div class="col-md-12 catalogo productos">
+	<div class="">
+		<div class="el-tab">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="text-center">
+						<h1>catálogo de productos</h1>
+						<p>Selecciona la pestaña que más te acomode para <br>buscar tu producto preferido.</p>
+					</div>
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item"><a href="#almacen" role="tab" data-toggle="tab" class="nav-link active" data-mix="almacen">Mix Almacén</a></li>
+						<li class="nav-item"><a href="#feria" role="tab" data-toggle="tab" class="nav-link" data-mix="feria">Mix Feria</a></li>
+					</ul>
+					<div class="clear30"></div>
+				</div>
+			</div>
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane in fade active" id="almacen">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="owl-carousel owl-theme carousel-prod carousel-productos">
+						        <?php
+						        $i=0;
+						        $query = new WP_Query( array( 'post_type' => 'productos','categoria'=>'almacen',  'posts_per_page' => -1));
+						        if ($query->have_posts() ) {
+						            while ( $query->have_posts() ) { 
+						                $query->the_post();
+						                ?>
+									    <div class="item">
+											<?php
+												if(has_post_thumbnail()):
+												$thumb_id = get_post_thumbnail_id($post->ID);
+												$thumb = wp_get_attachment_image_src($thumb_id, 'productos-mini');
+											?>
+												<a href="<?php the_permalink(); ?>"><img src="<?php echo $thumb[0]?>" class="img-responsive center" /></a>
+											<?php else: ?>
+												<a href="<?php the_permalink(); ?>"><img src="http://placehold.it/350x135" alt="<?php the_title(); ?>" class="img-responsive"></a>
+											<?php endif; ?>
+									    </div>
+						              <?php $i++; ?>
+						            <?php
+						            }
+						            wp_reset_postdata();
+						        }
+						        ?>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="feria">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="owl-carousel owl-theme carousel-prod carousel-productos">
+						        <?php
+						        $i=0;
+						        $query = new WP_Query( array( 'post_type' => 'productos','categoria'=>'feriante',  'posts_per_page' => -1));
+						        if ($query->have_posts() ) {
+						            while ( $query->have_posts() ) { 
+						                $query->the_post();
+						                ?>
+									    <div class="item">
+											<?php
+												if(has_post_thumbnail()):
+												$thumb_id = get_post_thumbnail_id($post->ID);
+												$thumb = wp_get_attachment_image_src($thumb_id, 'productos-mini');
+											?>
+												<a href="<?php the_permalink(); ?>"><img src="<?php echo $thumb[0]?>" class="img-responsive center" /></a>
+											<?php else: ?>
+												<a href="<?php the_permalink(); ?>"><img src="http://placehold.it/350x135" alt="<?php the_title(); ?>" class="img-responsive"></a>
+											<?php endif; ?>
+									    </div>
+						              <?php $i++; ?>
+						            <?php
+						            }
+						            wp_reset_postdata();
+						        }
+						        ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 offset-md-6">
+		<div class="pizarra">
+			<div class="text-center">
+				<div class="owl-carousel owl-theme carousel-prod carousel-slide">
+			        <?php
+			        $i=0;
+			        $query = new WP_Query( array( 'post_type' => 'productos', 'posts_per_page' => -1, 'orderby' => 'rand'));
+			        if ($query->have_posts() ) {
+			            while ( $query->have_posts() ) { 
+			                $query->the_post();
+			                ?>
+						    <div class="item">
+								<?php
+									$contenido = get_field('contenido');
+									$categoria = "";
+									$terms = get_the_terms( $post->ID , 'categoria' );
+									foreach ( $terms as $term ) {
+										$categoria = $term->slug;
+										//print_r($term);
+									}
+
+								?>
+						    	<h3 class="<?php echo $categoria; ?>"><?php the_title(); ?></h3>
+								<?php
+									if(has_post_thumbnail()):
+									$thumb_id = get_post_thumbnail_id($post->ID);
+									$thumb = wp_get_attachment_image_src($thumb_id, 'productos-interior');
+								?>
+									<a href="<?php the_permalink(); ?>"><img src="<?php echo $thumb[0]?>" class="img-responsive" /></a>
+								<?php else: ?>
+									<a href="<?php the_permalink(); ?>"><img src="http://placehold.it/150x135" alt="<?php the_title(); ?>" class="img-responsive"></a>
+								<?php endif; ?>
+							    <div class="context">
+							    	<?php echo $contenido; ?>
+							    </div>
+						    </div>
+			              <?php $i++; ?>
+			            <?php
+			            }
+			            wp_reset_postdata();
+			        }
+			        ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
